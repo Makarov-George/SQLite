@@ -5,30 +5,14 @@ try:
     cursor = sqlite_connection.cursor()
     print("База данных создана и успешно подключена к SQLite")
 
-    sqlite_create_table_students = '''CREATE TABLE Students (
-                                id INTEGER PRIMARY KEY,
-                                name TEXT NOT NULL,
-                                surname TEXT NOT NULL,
-                                age INTEGER NOT NULL,
-                                city TEXT NOT NULL);'''
-    
-    sqlite_create_table_courses = '''CREATE TABLE Courses (
-                                id INTEGER PRIMARY KEY,
-                                name TEXT NOT NULL,
-                                time_start TEXT NOT NULL,
-                                time_end TEXT NOT NULL);'''
-    
-    sqlite_create_table_student_courses = '''CREATE TABLE Student_courses (
-                                student_id INTEGER,
-                                course_id INTEGER,
-                                FOREIGN KEY(student_id) REFERENCES Students(id),
-                                FOREIGN KEY(course_id) REFERENCES Courses(id));'''
-    
-    cursor.execute(sqlite_create_table_students)
-    cursor.execute(sqlite_create_table_courses)
-    cursor.execute(sqlite_create_table_student_courses)
+    students = [(1, 'Max', 'Brooks', 24, 'Spb'), (2, 'John', 'Stones', 15, 'Spb'), (3, 'Andy', 'Wings', 45, 'Manhester'), (4, 'Kate', 'Brooks', 34, 'Spb')]
+    courses = [(1, 'python', '21.07.21', '21.08.21'), (2, 'java', '13.07.21', '16.08.21')]
+    students_courses = [(1, 1), (2, 1), (3, 1), (4, 2)]
+    cursor.executemany("INSERT INTO Students VALUES(?, ?, ?, ?, ?)", students)
+    cursor.executemany("INSERT INTO Courses VALUES(?, ?, ?, ?)", courses)
+    cursor.executemany("INSERT INTO Student_courses VALUES(?, ?)", students_courses)
     sqlite_connection.commit()
-    print("Таблицы созданы")
+    print("Таблицы заполнены")
     cursor.close()
 
 except _sqlite3.Error as error:
